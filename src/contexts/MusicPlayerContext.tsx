@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { createContext, ReactNode, useMemo, useState } from "react";
 import Track1 from "../audio/waterfall-140894.mp3";
 import Track2 from "../audio/relaxed-vlog-night-street-131746.mp3";
 import Track3 from "../audio/the-beat-of-nature-122841.mp3";
@@ -6,7 +6,25 @@ import Track4 from "../audio/only-forward-140896.mp3";
 import Track5 from "../audio/inspiring-dream-140960.mp3";
 import Track6 from "../audio/just-relax-11157.mp3";
 
-const MusicPlayerContext = React.createContext();
+interface MusicPlayerContextType {
+  state: {
+    audioPlayer: HTMLAudioElement;
+    tracks: {
+      name: string;
+      file: string;
+    }[];
+    currentTrackIndex: number | null;
+    isPlaying: boolean;
+  };
+  setState: React.Dispatch<
+    React.SetStateAction<MusicPlayerContextType["state"]>
+  >;
+}
+
+interface Props {
+  children?: ReactNode;
+  // any props that come into the component
+}
 
 const defaultValues = {
   audioPlayer: new Audio(),
@@ -36,11 +54,16 @@ const defaultValues = {
       file: Track6,
     },
   ],
-  currentTrackIndex: null,
+  currentTrackIndex: null as number | null,
   isPlaying: false,
 };
 
-function MusicPlayerProvider({ children }) {
+const MusicPlayerContext = createContext<MusicPlayerContextType>({
+  state: defaultValues,
+  setState: () => {},
+});
+
+function MusicPlayerProvider({ children }: Props) {
   const [state, setState] = useState(defaultValues);
   const value = useMemo(() => ({ state, setState }), [state]);
 
