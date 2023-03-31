@@ -1,4 +1,3 @@
-import React from "react";
 import useMusicPlayer from "../hooks/useMusicPlayer";
 
 export default function Controller() {
