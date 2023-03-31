@@ -13,7 +13,7 @@ const useMusicPlayer = () => {
     setState((prevState) => ({ ...prevState, isPlaying: !state.isPlaying }));
   }
 
-  function playTrack(index) {
+  function playTrack(index: number) {
     if (index === state.currentTrackIndex) {
       togglePlay();
     } else {
@@ -29,6 +29,7 @@ const useMusicPlayer = () => {
   }
 
   function playPreviousTrack() {
+    if (state.currentTrackIndex === null) return;
     const newIndex =
       (((state.currentTrackIndex + -1) % state.tracks.length) +
         state.tracks.length) %
@@ -37,6 +38,7 @@ const useMusicPlayer = () => {
   }
 
   function playNextTrack() {
+    if (state.currentTrackIndex === null) return;
     const newIndex = (state.currentTrackIndex + 1) % state.tracks.length;
     playTrack(newIndex);
   }
